@@ -15,3 +15,8 @@ variable "tags" {
     type = map(string)
     description = "List of the tags that will be assigned to each resource"
 }
+
+
+
+
+

@@ -1,0 +1,11 @@
+rg_name = "<Enter TF state RG Name Here>"
+
+rg_location = "<Enter TF State RG location here>"
+
+tags = {
+    <enter key value pairs for tags in the form key = "value">
+}
+
+state_container_name = "<Enter the name for the TF State blob container here>"
+
+tfstate_keyvault_name = "<Enter a key vault name prefix for the vault up to 15 characters here>"
