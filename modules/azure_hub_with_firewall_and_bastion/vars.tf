@@ -69,7 +69,3 @@ variable "log_analytics_id" {
   description = "The full resource id for the log analytics workspace where the firewall will send logs"
 }
 
-variable "release_version" {
-  type        = string
-  description = "the release tag for the implementation to ensure that the code references are backward compatible"
-}
