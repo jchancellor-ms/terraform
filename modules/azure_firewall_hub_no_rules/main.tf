@@ -17,7 +17,7 @@ resource "azurerm_firewall" "firewall" {
   location            = var.rg_location
   resource_group_name = var.rg_name
   sku_name            = "AZFW_VNet"
-  sku_tier            = var.sku_tier
+  sku_tier            = var.firewall_sku_tier
   private_ip_ranges   = ["IANAPrivateRanges", ]
   tags                = var.tags
 
@@ -30,8 +30,8 @@ resource "azurerm_firewall" "firewall" {
 
 #configure the firewall to send logs to a log analytics workspace
 resource "azurerm_monitor_diagnostic_setting" "firewall_metrics" {
-  name               = "${var.firewall_name}-diagnostic-setting"
-  target_resource_id = azurerm_firewall.firewall.id 
+  name                       = "${var.firewall_name}-diagnostic-setting"
+  target_resource_id         = azurerm_firewall.firewall.id
   log_analytics_workspace_id = var.log_analytics_id
 
   log {
@@ -63,7 +63,7 @@ resource "azurerm_monitor_diagnostic_setting" "firewall_metrics" {
 
   metric {
     category = "AllMetrics"
-    enabled = true
+    enabled  = true
 
     retention_policy {
       enabled = false
