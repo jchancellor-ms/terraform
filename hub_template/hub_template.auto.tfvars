@@ -12,5 +12,5 @@ firewall_sku_tier      = "Standard"
 firewall_pip_name      = "sample_firewall_public_ip_name"
 firewall_name          = "sample_firewall_name"
 log_analytics_id       = "<put LA workspace ID here>"
-release_version        = "v0.0.2"
+
 

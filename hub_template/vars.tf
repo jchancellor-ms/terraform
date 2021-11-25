@@ -49,7 +49,7 @@ variable "firewall_sku_tier" {
   description = "Firewall Sku Tier - allowed values are Standard and Premium"
   default     = "Standard"
   validation {
-    condition     = contains(["Standard", "Premium"], var.sku_tier)
+    condition     = contains(["Standard", "Premium"], var.firewall_sku_tier)
     error_message = "Value must be Standard or Premium."
   }
 }
