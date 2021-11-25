@@ -14,10 +14,6 @@ output "vnet_id" {
     value = azurerm_virtual_network.hub_network.id
 }
 
-output "gateway_id" {
-    value = azurerm_virtual_network_gateway.hub_gateway.id
-}
-
 output "rg_name" {
     value = azurerm_resource_group.hub_rg.name
 }

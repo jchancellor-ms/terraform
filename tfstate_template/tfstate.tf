@@ -32,3 +32,16 @@ variable "tfstate_keyvault_name" {
     type = string
     description = "Azure resouuce name assigned to the keyvault for terraform related secrets"
 }
+
+
+output "rg_name" {
+    value = var.rg_name
+}
+
+output "terraform_storage_account_name" {
+    value = module.azure_terraform_state_setup.terraform_storage_account_name
+}
+
+output "state_container_name" {
+    value = var.state_container_name
+}
