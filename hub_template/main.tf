@@ -1,5 +1,5 @@
 module "azure_hub_with_firewall_and_bastion" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_firewall_and_bastion?v0.0.3"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_firewall_and_bastion?ref=v0.0.5"
 
   hub_vnet_name          = var.hub_vnet_name
   vnet_address_space     = var.vnet_address_space
