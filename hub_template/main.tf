@@ -1,5 +1,10 @@
+locals {
+  peer_details = csvdecode(file(var.peer_csv_filename))
+}
+
+
 module "azure_hub_with_firewall_and_bastion" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_firewall_and_bastion?ref=v0.0.8"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_firewall_and_bastion?ref=v0.0.9"
 
   hub_vnet_name          = var.hub_vnet_name
   vnet_address_space     = var.vnet_address_space
@@ -16,3 +21,15 @@ module "azure_hub_with_firewall_and_bastion" {
   firewall_name          = var.firewall_name
   log_analytics_id       = var.log_analytics_id
 }
+
+module "azure_vnet_peering_hub_defaults" {
+  source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_hub_defaults?ref=v0.0.9"
+
+  for_each = local.peer_details
+
+  hub_rg_name     = var.rg_name
+  hub_vnet_name   = var.hub_vnet_name
+  spoke_vnet_name = each.value.spoke_vnet_name
+  spoke_vnet_id   = each.value.spoke_vnet_id
+}
+

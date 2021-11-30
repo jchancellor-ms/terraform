@@ -69,3 +69,7 @@ variable "log_analytics_id" {
   description = "The full resource id for the log analytics workspace where the firewall will send logs"
 }
 
+variable "peer_csv_filename" {
+  type        = string
+  description = "Filename with spoke peering information"
+}
