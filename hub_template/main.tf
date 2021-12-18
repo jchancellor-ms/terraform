@@ -26,7 +26,7 @@ module "azure_vnet_peering_hub_defaults" {
   source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_hub_defaults?ref=v0.0.9"
 
   for_each = { for peer in local.peer_details : peer.spoke_vnet_name => peer }
-  
+
   hub_rg_name     = var.rg_name
   hub_vnet_name   = var.hub_vnet_name
   spoke_vnet_name = each.value.spoke_vnet_name
