@@ -38,11 +38,6 @@ variable "bastion_subnet_prefix" {
   description = "A list of subnet prefix CIDR values used for the bastion subnet address space"
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "List of the tags that will be assigned to each resource"
-}
-
 variable "bastion_pip_name" {
   type        = string
   description = "Azure resouuce name assigned to the bastion public ip"
