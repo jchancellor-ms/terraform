@@ -111,7 +111,7 @@ module "adfs_vm" {
   rg_name           = module.azure_spoke_with_custom_dns.rg_name
   rg_location       = var.rg_location
   vm_name           = var.adfs_vm_name
-  subnet_id         = module.azure_hub_with_bastion.gateway_subnet_id
+  subnet_id         = module.azure_spoke_with_custom_dns.data_subnet_id
   vm_sku            = "Standard_B2ms"
   key_vault_id      = module.azure_keyvault_with_access_policy.keyvault_id
   os_version_sku    = var.adfs_os_version_sku
