@@ -30,11 +30,11 @@ module "azure_hub_with_bastion" {
   gateway_subnet_prefix  = var.gateway_subnet_prefix
   firewall_subnet_prefix = var.firewall_subnet_prefix
   bastion_subnet_prefix  = var.bastion_subnet_prefix
-  dc_subnet_prefix = var.dc_subnet_prefix
+  dc_subnet_prefix       = var.dc_subnet_prefix
   tags                   = local.cloud_tags
   bastion_pip_name       = var.bastion_pip_name
   bastion_name           = var.bastion_name
-  
+
 }
 
 #create spoke vnet 
