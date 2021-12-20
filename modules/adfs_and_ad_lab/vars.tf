@@ -55,9 +55,7 @@ variable "spoke_vnet_address_space" {
   type        = list(string)
   description = "List of CIDR ranges assigned to the spoke VNET.  Typically one larger range."
 }
-variable "spoke_rg_name" {
-  type = string
-}
+
 variable "web_subnet_name" {
   type = string
 }

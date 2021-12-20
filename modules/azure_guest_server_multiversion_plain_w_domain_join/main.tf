@@ -1,4 +1,4 @@
-local {
+locals {
   admin_username = "azureuser"
 }
 
