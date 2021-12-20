@@ -115,6 +115,7 @@ module "adfs_vm" {
   os_version_sku    = var.adfs_os_version_sku
   ou_path           = ""
   ad_domain_netbios = var.ad_domain_netbios
+  tags                = local.cloud_tags
 
   depends_on = [
     module.on_prem_dc
