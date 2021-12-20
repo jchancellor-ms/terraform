@@ -11,6 +11,7 @@ module "azure_vnet_hub_extra_subnets" {
   gateway_subnet_prefix  = var.gateway_subnet_prefix
   firewall_subnet_prefix = var.firewall_subnet_prefix
   bastion_subnet_prefix  = var.bastion_subnet_prefix
+  dc_subnet_prefix       = var.dc_subnet_prefix
   tags                   = var.tags
 }
 

@@ -44,4 +44,7 @@ variable "bastion_name" {
   description = "Azure resouuce name assigned to the bastion instance"
 }
 
-
+variable "dc_subnet_prefix" {
+  type        = list(string)
+  description = "A list of subnet prefix CIDR values used for the domain controller subnet address space"
+}

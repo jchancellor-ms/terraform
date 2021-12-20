@@ -97,3 +97,8 @@ variable "adfs_os_version_sku" {
   description = "The sku value for the virtual machine being deployed"
   default     = "2016-Datacenter"
 }
+
+variable "dc_subnet_prefix" {
+  type        = list(string)
+  description = "A list of subnet prefix CIDR values used for the domain controller subnet address space"
+}

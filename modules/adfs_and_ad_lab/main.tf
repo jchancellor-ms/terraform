@@ -21,7 +21,7 @@ locals {
 
 #create resource group, network hub, and bastion
 module "azure_hub_with_bastion" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_bastion?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_bastion"
 
   hub_vnet_name          = var.hub_vnet_name
   vnet_address_space     = var.hub_vnet_address_space
@@ -30,14 +30,16 @@ module "azure_hub_with_bastion" {
   gateway_subnet_prefix  = var.gateway_subnet_prefix
   firewall_subnet_prefix = var.firewall_subnet_prefix
   bastion_subnet_prefix  = var.bastion_subnet_prefix
+  dc_subnet_prefix = var.dc_subnet_prefix
   tags                   = local.cloud_tags
   bastion_pip_name       = var.bastion_pip_name
   bastion_name           = var.bastion_name
+  
 }
 
 #create spoke vnet 
 module "azure_spoke_with_custom_dns" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_spoke_with_custom_dns?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_spoke_with_custom_dns"
 
   vnet_name          = var.spoke_vnet_name
   address_space      = var.spoke_vnet_address_space
@@ -53,7 +55,7 @@ module "azure_spoke_with_custom_dns" {
 
 #create peering
 module "azure_vnet_peering_hub_defaults" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_hub_defaults?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_hub_defaults"
 
   spoke_vnet_name = var.spoke_vnet_name
   spoke_vnet_id   = module.azure_spoke_with_custom_dns.spoke_vnet_id
@@ -62,7 +64,7 @@ module "azure_vnet_peering_hub_defaults" {
 }
 
 module "azure_vnet_peering_spoke_defaults" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_spoke_defaults?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_vnet_peering_spoke_no_gateway"
 
   hub_vnet_name   = var.hub_vnet_name
   hub_vnet_id     = module.azure_hub_with_bastion.vnet_id
@@ -76,7 +78,7 @@ data "azurerm_client_config" "current" {
 }
 
 module "azure_keyvault_with_access_policy" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_keyvault_with_access_policy?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_keyvault_with_access_policy"
 
   #values to create the keyvault
   rg_name             = module.azure_hub_with_bastion.rg_name
@@ -89,7 +91,7 @@ module "azure_keyvault_with_access_policy" {
 
 #create the Domain Controller
 module "on_prem_dc" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_guest_server_2016_dc?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_guest_server_2016_dc"
 
   rg_name                       = module.azure_spoke_with_custom_dns.rg_name
   rg_location                   = var.rg_location
@@ -104,7 +106,7 @@ module "on_prem_dc" {
 
 #deploy a VM to use for ADFS
 module "adfs_vm" {
-  source = "github.com/jchancellor-ms/terraform//modules/azure_guest_server_multiversion_plain_w_domain_join?ref=v0.0.23"
+  source = "github.com/jchancellor-ms/terraform//modules/azure_guest_server_multiversion_plain_w_domain_join"
 
   rg_name           = module.azure_spoke_with_custom_dns.rg_name
   rg_location       = var.rg_location

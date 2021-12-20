@@ -38,3 +38,10 @@ resource "azurerm_subnet" "bastion_subnet" {
   resource_group_name  = azurerm_resource_group.hub_rg.name
   address_prefixes     = var.bastion_subnet_prefix
 }
+
+resource "azurerm_subnet" "dc_subnet" {
+  name                 = "DCSubnet"
+  virtual_network_name = azurerm_virtual_network.hub_network.name
+  resource_group_name  = azurerm_resource_group.hub_rg.name
+  address_prefixes     = var.dc_subnet_prefix
+}
