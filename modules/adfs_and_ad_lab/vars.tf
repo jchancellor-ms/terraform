@@ -91,3 +91,9 @@ variable "adfs_vm_name" {
   type        = string
   description = "The azure resource name for the virtual machine"
 }
+
+variable "adfs_os_version_sku" {
+  type        = string
+  description = "The sku value for the virtual machine being deployed"
+  default     = "2016-Datacenter"
+}
