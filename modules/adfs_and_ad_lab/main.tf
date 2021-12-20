@@ -1,15 +1,36 @@
+#set local variable values for deployment
+resource "random_string" "namestring" {
+  length  = 4
+  special = false
+  upper   = false
+  lower   = true
+}
+
+locals {
+
+
+
+  keyvault_name = "${var.project}-${random_string.namestring.result}"
+
+  cloud_tags = {
+    project  = var.project
+    location = var.rg_location
+  }
+
+}
+
 #create resource group, network hub, and bastion
 module "azure_hub_with_bastion" {
   source = "github.com/jchancellor-ms/terraform//modules/azure_hub_with_bastion?ref=v0.0.12"
 
   hub_vnet_name          = var.hub_vnet_name
-  vnet_address_space     = var.vnet_address_space
+  vnet_address_space     = var.hub_vnet_address_space
   rg_name                = var.hub_rg_name
   rg_location            = var.rg_location
   gateway_subnet_prefix  = var.gateway_subnet_prefix
   firewall_subnet_prefix = var.firewall_subnet_prefix
   bastion_subnet_prefix  = var.bastion_subnet_prefix
-  tags                   = var.tags
+  tags                   = local.cloud_tags
   bastion_pip_name       = var.bastion_pip_name
   bastion_name           = var.bastion_name
 }
@@ -26,8 +47,8 @@ module "azure_spoke_with_custom_dns" {
   web_subnet_prefix  = var.web_subnet_prefix
   data_subnet_name   = var.data_subnet_name
   data_subnet_prefix = var.data_subnet_prefix
-  tags               = var.tags
-  dns_servers        = var.dns_servers
+  tags               = local.cloud_tags
+  dns_servers        = [var.dc_private_ip, ]
 }
 
 #create peering
@@ -60,10 +81,10 @@ module "azure_keyvault_with_access_policy" {
   #values to create the keyvault
   rg_name             = module.azure_hub_with_bastion.rg_name
   rg_location         = var.rg_location
-  keyvault_name       = var.keyvault_name
+  keyvault_name       = local.keyvault_name
   azure_ad_tenant_id  = data.azurerm_client_config.current.tenant_id
   lab_admin_object_id = data.azurerm_client_config.current.object_id
-  tags                = var.tags
+  tags                = local.cloud_tags
 }
 
 #create the Domain Controller
@@ -100,3 +121,4 @@ module "adfs_vm" {
   ]
 }
 
+#TODO: Add custom script deployments to deploy and configure ADFS

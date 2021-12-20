@@ -2,7 +2,7 @@ variable "hub_vnet_name" {
   type        = string
   description = "The azure resource name for the hub vnet"
 }
-variable "vnet_address_space" {
+variable "hub_vnet_address_space" {
   type        = list(string)
   description = "List of CIDR ranges assigned to the hub VNET.  Typically one larger range."
 }
@@ -86,7 +86,7 @@ variable "dc_vm_name" {
   type        = string
   description = "The azure resource name for the virtual machine"
 }
-variable "aad_domain_fullname" {
+variable "ad_domain_fullname" {
   type        = string
   description = "The full domain name for the domain being created"
 }
