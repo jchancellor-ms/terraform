@@ -68,16 +68,7 @@ variable "data_subnet_name" {
 variable "data_subnet_prefix" {
   type = list(string)
 }
-variable "dns_servers" {}
-
-
-
-variable "keyvault_name" {
-  type        = string
-  description = "The azure resource name for the keyvault. Must be globally unique"
-}
-
-
+#variable "dns_servers" {}
 
 
 variable "dc_vm_name" {
