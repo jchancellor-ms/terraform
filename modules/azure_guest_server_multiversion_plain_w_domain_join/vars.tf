@@ -42,4 +42,9 @@ variable "ad_domain_netbios" {
   description = "The netbios name for the domain being created"
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "List of the tags that will be assigned to each resource"
+}
+
 #variable "firewall_ip" {}

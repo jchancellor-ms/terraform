@@ -34,6 +34,7 @@ resource "azurerm_windows_virtual_machine" "virtualmachine" {
   location                 = var.rg_location
   size                     = var.vm_sku
   admin_username           = local.admin_username
+  tags                     = var.tags
   admin_password           = random_password.userpass.result
   license_type             = "Windows_Server"
   enable_automatic_updates = true
@@ -61,7 +62,7 @@ resource "azurerm_virtual_machine_extension" "join_domain_adfs" {
   type                       = "JsonADDomainExtension"
   type_handler_version       = "1.3"
   auto_upgrade_minor_version = true
-  tags                       = var.tags
+
 
   settings = <<SETTINGS
     {
