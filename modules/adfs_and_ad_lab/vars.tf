@@ -1,3 +1,7 @@
+variable "project" {
+  type        = string
+  description = "The project name used to seed the tags and naming prefixes."
+}
 variable "hub_vnet_name" {
   type        = string
   description = "The azure resource name for the hub vnet"
