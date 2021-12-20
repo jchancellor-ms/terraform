@@ -10,6 +10,10 @@ output "bastion_subnet_id" {
   value = azurerm_subnet.bastion_subnet.id
 }
 
+output "dc_subnet_id" {
+  value = azurerm_subnet.dc_subnet.id
+}
+
 output "vnet_id" {
   value = azurerm_virtual_network.hub_network.id
 }

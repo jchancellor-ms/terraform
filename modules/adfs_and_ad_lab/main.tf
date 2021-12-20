@@ -96,7 +96,7 @@ module "on_prem_dc" {
   rg_name                       = module.azure_spoke_with_custom_dns.rg_name
   rg_location                   = var.rg_location
   vm_name                       = var.dc_vm_name
-  subnet_id                     = module.azure_hub_with_bastion.gateway_subnet_id
+  subnet_id                     = module.azure_hub_with_bastion.dc_subnet_id
   vm_sku                        = "Standard_B2ms"
   key_vault_id                  = module.azure_keyvault_with_access_policy.keyvault_id
   active_directory_domain       = var.ad_domain_fullname
