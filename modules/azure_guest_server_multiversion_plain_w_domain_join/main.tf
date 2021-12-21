@@ -16,6 +16,11 @@ resource "azurerm_key_vault_secret" "vmpassword" {
   depends_on   = [var.key_vault_id]
 }
 
+data "azurerm_key_vault_secret" "dc_join_password" {
+  name = "${var.dc_vm_name}-password"
+  key_vault_id = var.key_vault_id
+}
+
 resource "azurerm_network_interface" "testnic" {
   name                = "${var.vm_name}-nic-1"
   location            = var.rg_location
@@ -76,7 +81,7 @@ SETTINGS
 
   protected_settings = <<SETTINGS
     {
-        "Password": "${random_password.userpass.result}"
+        "Password": "${data.azurerm_key_vault_secret.dc_join_password.value}"
     }
 SETTINGS
 }

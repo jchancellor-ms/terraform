@@ -119,6 +119,7 @@ module "adfs_vm" {
   ou_path            = ""
   ad_domain_netbios  = var.ad_domain_netbios
   ad_domain_fullname = var.ad_domain_fullname
+  dc_vm_name         = var.dc_vm_name
   tags               = local.cloud_tags
 
   depends_on = [

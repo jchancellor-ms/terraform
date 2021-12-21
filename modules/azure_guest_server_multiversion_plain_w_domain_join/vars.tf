@@ -51,4 +51,9 @@ variable "ad_domain_fullname" {
   type        = string
   description = "The full domain name for the domain being created"
 }
+
+variable "dc_vm_name" {
+  type        = string
+  description = "The azure resource name for the virtual machine"
+}
 #variable "firewall_ip" {}
