@@ -102,22 +102,24 @@ module "on_prem_dc" {
   active_directory_domain       = var.ad_domain_fullname
   active_directory_netbios_name = var.ad_domain_netbios
   private_ip_address            = var.dc_private_ip
+
 }
 
 #deploy a VM to use for ADFS
 module "adfs_vm" {
   source = "github.com/jchancellor-ms/terraform//modules/azure_guest_server_multiversion_plain_w_domain_join"
 
-  rg_name           = module.azure_spoke_with_custom_dns.rg_name
-  rg_location       = var.rg_location
-  vm_name           = var.adfs_vm_name
-  subnet_id         = module.azure_spoke_with_custom_dns.data_subnet_id
-  vm_sku            = "Standard_B2ms"
-  key_vault_id      = module.azure_keyvault_with_access_policy.keyvault_id
-  os_version_sku    = var.adfs_os_version_sku
-  ou_path           = ""
-  ad_domain_netbios = var.ad_domain_netbios
-  tags              = local.cloud_tags
+  rg_name            = module.azure_spoke_with_custom_dns.rg_name
+  rg_location        = var.rg_location
+  vm_name            = var.adfs_vm_name
+  subnet_id          = module.azure_spoke_with_custom_dns.data_subnet_id
+  vm_sku             = "Standard_B2ms"
+  key_vault_id       = module.azure_keyvault_with_access_policy.keyvault_id
+  os_version_sku     = var.adfs_os_version_sku
+  ou_path            = ""
+  ad_domain_netbios  = var.ad_domain_netbios
+  ad_domain_fullname = var.ad_domain_fullname
+  tags               = local.cloud_tags
 
   depends_on = [
     module.on_prem_dc

@@ -47,4 +47,8 @@ variable "tags" {
   description = "List of the tags that will be assigned to each resource"
 }
 
+variable "ad_domain_fullname" {
+  type        = string
+  description = "The full domain name for the domain being created"
+}
 #variable "firewall_ip" {}

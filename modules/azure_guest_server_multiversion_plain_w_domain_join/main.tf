@@ -66,7 +66,7 @@ resource "azurerm_virtual_machine_extension" "join_domain_adfs" {
 
   settings = <<SETTINGS
     {
-        "Name": "${var.ad_domain_netbios}",
+        "Name": "${var.ad_domain_fullname}",
         "OUPath": "${var.ou_path != null ? var.ou_path : ""}",
         "User": "${local.admin_username}@${var.ad_domain_netbios}",
         "Restart": "true",
