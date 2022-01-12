@@ -17,7 +17,7 @@ resource "azurerm_key_vault_secret" "vmpassword" {
 }
 
 data "azurerm_key_vault_secret" "dc_join_password" {
-  name = "${var.dc_vm_name}-password"
+  name         = "${var.dc_vm_name}-password"
   key_vault_id = var.key_vault_id
 }
 
