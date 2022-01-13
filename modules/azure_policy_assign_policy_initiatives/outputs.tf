@@ -1,4 +1,4 @@
 output "subscription_object" {
-    #value = local.subscription_initiatives
-    value = "placeholder"
+  #value = local.subscription_initiatives
+  value = "placeholder"
 }

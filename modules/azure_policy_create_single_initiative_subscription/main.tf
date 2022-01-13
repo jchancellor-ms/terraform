@@ -6,6 +6,8 @@ locals {
 module "custom_policy_creation" {
   source             = "../azure_policy_create_custom_policies"
   policy_definitions = local.policies
+  scope              = var.initiative_definition.scope
+  scope_target       = var.initiative_definition.scope_target
 }
 
 
@@ -34,3 +36,4 @@ resource "azurerm_policy_set_definition" "this" {
     }
   }
 }
+
