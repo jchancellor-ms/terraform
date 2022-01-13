@@ -1,6 +1,8 @@
 locals {
-  policies         = var.initiative_definition.policies
-  policy_name_list = [for policy in local.policies : policy.display_name]
+  policies              = var.initiative_definition.policies
+  policy_name_list      = [for policy in local.policies : policy.display_name]
+  management_group_name = element(split("/", var.initiative_definition.scope_target), length(split("/", var.initiative_definition.scope_target)) - 1)
+  #"/providers/Microsoft.Management/managementGroups/t1-mgmtgroup"
 }
 
 module "custom_policy_creation" {
@@ -26,7 +28,7 @@ resource "azurerm_policy_set_definition" "this" {
   name                  = var.initiative_definition.name
   policy_type           = var.initiative_definition.type
   display_name          = var.initiative_definition.display_name
-  management_group_name = var.initiative_definition.scope_target
+  management_group_name = local.management_group_name
 
   dynamic "policy_definition_reference" {
     #for_each = var.policy_definitions
