@@ -28,6 +28,7 @@ resource "azurerm_policy_set_definition" "this" {
   name                  = var.initiative_definition.name
   policy_type           = var.initiative_definition.type
   display_name          = var.initiative_definition.display_name
+  description           = var.initiative_definition.description
   management_group_name = local.management_group_name
 
   dynamic "policy_definition_reference" {

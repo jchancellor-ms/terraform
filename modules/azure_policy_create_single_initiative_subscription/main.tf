@@ -25,6 +25,7 @@ resource "azurerm_policy_set_definition" "this" {
   name         = var.initiative_definition.name
   policy_type  = var.initiative_definition.type
   display_name = var.initiative_definition.display_name
+  description  = var.initiative_definition.description
 
   dynamic "policy_definition_reference" {
     #for_each = var.policy_definitions
