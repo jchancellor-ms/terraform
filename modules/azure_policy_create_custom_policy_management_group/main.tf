@@ -3,8 +3,6 @@
 #create new policy definition 
 ### get policy rule from github location
 ### get policy parameters from github location
-
-
 data "github_repository" "this" {
   full_name = var.custom_policy_github_repo
 }
