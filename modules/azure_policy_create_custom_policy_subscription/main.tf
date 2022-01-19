@@ -40,6 +40,7 @@ resource "azurerm_policy_definition" "this" {
   name         = var.policy_definition_name
   policy_type  = "Custom"
   mode         = var.policy_mode
+  description  = var.policy_description
   display_name = var.policy_definition_display_name
 
   metadata    = data.github_repository_file.this_policy_metadata.content

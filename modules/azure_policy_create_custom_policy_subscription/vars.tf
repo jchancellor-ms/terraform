@@ -10,6 +10,10 @@ variable "policy_mode" {
   description = "Mode of the policy being implemented.  Typically this value is all or indexed"
 }
 
+variable "policy_description" {
+  description = "Description of the policy being implemented."
+}
+
 variable "custom_policy_github_repo" {
   description = "Github Repo where the custom policy definition files are hosted"
 }

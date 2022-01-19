@@ -15,6 +15,7 @@ module "custom_policy_creation_subscription" {
   policy_definition_name         = each.value.name
   policy_definition_display_name = each.value.display_name
   policy_mode                    = each.value.mode
+  policy_description             = each.value.description
   custom_policy_github_repo      = each.value.github_repo
   github_repo_branch             = each.value.github_repo_branch
   policy_rule_filename           = each.value.policy_rule_filename
@@ -30,6 +31,7 @@ module "custom_policy_creation_management_group" {
   policy_definition_name         = each.value.name
   policy_definition_display_name = each.value.display_name
   policy_mode                    = each.value.mode
+  policy_description             = each.value.description
   custom_policy_github_repo      = each.value.github_repo
   github_repo_branch             = each.value.github_repo_branch
   policy_rule_filename           = each.value.policy_rule_filename
