@@ -1,5 +1,5 @@
 locals {
-  policies                  = { for policy in var.policy_definitions : policy.name => policy if policy.type == "Custom" }
+  policies                  = { for policy in var.policy_definitions : "${policy.name}-${local.short_scope}" => policy if policy.type == "Custom" }
   null_policies             = {}
   management_group_policies = (var.scope == "management_group" ? local.policies : local.null_policies)
   subscription_policies     = (var.scope == "subscription" ? local.policies : local.null_policies)
@@ -13,7 +13,7 @@ module "custom_policy_creation_subscription" {
 
   for_each = local.subscription_policies
 
-  policy_definition_name         = "${each.value.name}-${local.short_scope}"
+  policy_definition_name         = length("${each.value.name}-${local.short_scope}") < 64 ? "${each.value.name}-${local.short_scope}" : substr("${each.value.name}-${local.short_scope}", 0, 63)
   policy_definition_display_name = each.value.display_name
   policy_mode                    = each.value.mode
   policy_description             = each.value.description
@@ -29,7 +29,7 @@ module "custom_policy_creation_management_group" {
 
   for_each = local.management_group_policies
 
-  policy_definition_name         = "${each.value.name}-${local.short_scope}"
+  policy_definition_name         = length("${each.value.name}-${local.short_scope}") < 64 ? "${each.value.name}-${local.short_scope}" : substr("${each.value.name}-${local.short_scope}", 0, 63)
   policy_definition_display_name = each.value.display_name
   policy_mode                    = each.value.mode
   policy_description             = each.value.description
