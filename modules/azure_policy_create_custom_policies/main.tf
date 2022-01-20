@@ -1,5 +1,5 @@
 locals {
-  policies                  = { for policy in var.policy_definitions : "${policy.name}-${local.short_scope}" => policy if policy.type == "Custom" }
+  policies                  = { for policy in var.policy_definitions : (length("${policy.name}-${local.short_scope}") < 64 ? "${policy.name}-${local.short_scope}" : substr("${policy.name}-${local.short_scope}", 0, 63)) => policy if policy.type == "Custom" }
   null_policies             = {}
   management_group_policies = (var.scope == "management_group" ? local.policies : local.null_policies)
   subscription_policies     = (var.scope == "subscription" ? local.policies : local.null_policies)
