@@ -3,7 +3,7 @@ locals {
   null_policies             = {}
   management_group_policies = (var.scope == "management_group" ? local.policies : local.null_policies)
   subscription_policies     = (var.scope == "subscription" ? local.policies : local.null_policies)
-  short_scope = element(split("/", var.scope_target), length(split("/", var.scope_target)) - 1)
+  short_scope               = element(split("/", var.scope_target), length(split("/", var.scope_target)) - 1)
 }
 
 

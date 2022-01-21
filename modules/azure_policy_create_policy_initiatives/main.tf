@@ -1,19 +1,13 @@
 #create each policy initiative configured in the definition file
 
 locals {
-  subscription_initiatives     = { for initiative in var.initiative_details : initiative.display_name => initiative if initiative.scope == "subscription" }
-  management_group_initiatives = { for initiative in var.initiative_details : initiative.display_name => initiative if initiative.scope == "management_group" }
-
-  /*  
-  null_policies = {}
-  management_group_policies = (var.scope == "management_group" ? local.policies : local.null_policies)
-  subscription_policies = (var.scope == "subscription" ? local.policies : local.null_policies)
-
-  */
+  subscription_initiatives     = { for initiative in var.initiative_details : (length("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}") < 64 ? "${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}" : substr("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}", 0, 63)) => initiative if initiative.scope == "subscription" }
+  management_group_initiatives = { for initiative in var.initiative_details : (length("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}") < 64 ? "${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}" : substr("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}", 0, 63)) => initiative if initiative.scope == "management_group" }
+  #length("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}") < 64 ? "${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}" : substr("${initiative.name}-${(element(split("/", initiative.scope_target), length(split("/", initiative.scope_target)) - 1))}", 0, 63)
 }
 
 #if the initiative has a management group scope call the management group initiative creation
-#if the initiative has a subscription scope calle the subscription initiative creation
+#if the initiative has a subscription scope call the subscription initiative creation
 
 
 module "create_policy_initiative_management_group" {
