@@ -1,7 +1,7 @@
-#rg
+
 
 locals {
-  vwan_rg_name = "rg-vwan-hub-${var.site_root}-${random_string.namestring.result}"
+  vwan_rg_name = "rg-vwan-hub-${var.site_root}-${var.vwan_site_index}"
 }
 
 resource "azurerm_resource_group" "vwan_hub_rg" {

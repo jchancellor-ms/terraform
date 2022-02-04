@@ -30,6 +30,11 @@ variable "bastion_subnet_prefix" {
   description = "A list of subnet prefix CIDR values used for the bastion subnet address space"
 }
 
+variable "dc_subnet_prefix" {
+  type        = list(string)
+  description = "A list of subnet prefix CIDR values used for the domain controller subnet address space"
+}
+
 variable "tags" {
   type        = map(string)
   description = "List of the tags that will be assigned to each resource"

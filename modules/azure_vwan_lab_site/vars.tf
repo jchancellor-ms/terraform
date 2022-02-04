@@ -44,6 +44,11 @@ variable "bastion_subnet_prefix" {
   description = "A list of subnet prefix CIDR values used for the bastion subnet address space"
 }
 
+variable "dc_subnet_prefix" {
+  type        = list(string)
+  description = "A list of subnet prefix CIDR values used for the domain controller subnet address space"
+}
+
 variable "spoke_vnet_address_space" {
   type        = list(string)
   description = "A list of subnet prefix CIDR values used for the hub vnet"
@@ -68,4 +73,9 @@ variable "os_version_sku" {
   type        = string
   description = "The sku value for the virtual machine being deployed"
   default     = "2016-Datacenter"
+}
+
+variable "log_analytics_id" {
+  type        = string
+  description = "The id for the log analytics workspace being used"
 }

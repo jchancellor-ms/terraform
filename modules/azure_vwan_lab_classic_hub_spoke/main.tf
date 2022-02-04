@@ -34,10 +34,11 @@ module "azure_hub_with_firewall_and_bastion" {
   gateway_subnet_prefix  = var.gateway_subnet_prefix
   firewall_subnet_prefix = var.firewall_subnet_prefix
   bastion_subnet_prefix  = var.bastion_subnet_prefix
+  dc_subnet_prefix       = var.dc_subnet_prefix
   tags                   = var.tags
   bastion_pip_name       = local.bastion_pip_name
   bastion_name           = local.bastion_name
-  firewall_sku_tier      = var.firewall_sku_tier
+  firewall_sku_tier      = "Standard"
   firewall_pip_name      = local.firewall_pip_name
   firewall_name          = local.firewall_name
   log_analytics_id       = var.log_analytics_id
@@ -56,12 +57,15 @@ module "azure_spoke_with_custom_dns" {
   data_subnet_name   = local.web_subnet_name
   data_subnet_prefix = var.data_subnet_prefix
   tags               = var.tags
-  dns_servers        = module.azure_hub_with_firewall_and_bastion.firewall_private_ip_address
+  dns_servers        = [module.azure_hub_with_firewall_and_bastion.firewall_private_ip_address]
 }
 
 
 #Peering Configuration
 module "azure_vnet_peering_spoke_no_gateway" {
+
+  source = "../azure_vnet_peering_spoke_no_gateway"
+
   hub_vnet_name   = local.hub_vnet_name
   hub_vnet_id     = module.azure_hub_with_firewall_and_bastion.vnet_id
   spoke_vnet_name = local.spoke_vnet_name
@@ -73,6 +77,7 @@ module "azure_vnet_peering_spoke_no_gateway" {
 }
 
 module "azure_vnet_peering_hub_default" {
+  source          = "../azure_vnet_peering_hub_defaults"
   spoke_vnet_name = local.spoke_vnet_name
   spoke_vnet_id   = module.azure_spoke_with_custom_dns.spoke_vnet_id
   hub_vnet_name   = local.hub_vnet_name

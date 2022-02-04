@@ -1,3 +1,6 @@
+variable "site_root" {
+  description = "Unique identifier for the site elements"
+}
 
 variable "vwan_rg_location" {
   description = "Resource Group region location"
