@@ -7,6 +7,10 @@ variable "vwan_rg_location" {
   default     = "westus2"
 }
 
+variable "vwan_rg_name" {
+  description = "Resource Group name"
+}
+
 variable "tags" {
   description = "Pass through tags"
 }

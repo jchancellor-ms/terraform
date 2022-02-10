@@ -1,6 +1,6 @@
 locals {
   hub_vnet_name     = "vnet-hub-${var.site_root}-${random_string.namestring.result}"
-  hub_rg_name       = "rg-hub-${var.site_root}-${random_string.namestring.result}"
+  hub_rg_name       = "rg-vnet-hub-${var.site_root}-${random_string.namestring.result}"
   bastion_pip_name  = "pip-bastion-${var.site_root}-${random_string.namestring.result}"
   bastion_name      = "bastion-${var.site_root}-${random_string.namestring.result}"
   firewall_pip_name = "pip-firewall-${var.site_root}-${random_string.namestring.result}"
@@ -14,6 +14,9 @@ locals {
   keyvault_name = "keyvault-${var.site_root}-${random_string.namestring.result}"
 
   vm_name = "winvm-${var.site_root}-${random_string.namestring.result}"
+
+  web_route_table_name  = "rt-spoke-web-${var.site_root}-${random_string.namestring.result}"
+  data_route_table_name = "rt-spoke-data-${var.site_root}-${random_string.namestring.result}"
 }
 
 resource "random_string" "namestring" {
@@ -54,10 +57,14 @@ module "azure_spoke_with_custom_dns" {
   rg_location        = var.rg_location
   web_subnet_name    = local.web_subnet_name
   web_subnet_prefix  = var.web_subnet_prefix
-  data_subnet_name   = local.web_subnet_name
+  data_subnet_name   = local.data_subnet_name
   data_subnet_prefix = var.data_subnet_prefix
   tags               = var.tags
   dns_servers        = [module.azure_hub_with_firewall_and_bastion.firewall_private_ip_address]
+
+  depends_on = [
+    module.azure_hub_with_firewall_and_bastion
+  ]
 }
 
 
@@ -120,6 +127,70 @@ module "azure_guest_server_multiversion_plain" {
   key_vault_id   = module.azure_keyvault_with_access_policy.keyvault_id
   os_version_sku = var.os_version_sku
   tags           = var.tags
+
+  depends_on = [
+    module.azure_keyvault_with_access_policy
+  ]
+}
+
+#spoke routes
+resource "azurerm_route_table" "spoke-web" {
+  name                          = local.web_route_table_name
+  location                      = var.rg_location
+  resource_group_name           = local.spoke_rg_name
+  disable_bgp_route_propagation = false
+  tags                          = var.tags
+
+  depends_on = [
+    module.azure_spoke_with_custom_dns
+  ]
 }
 
 
+resource "azurerm_route_table" "spoke-data" {
+  name                          = local.data_route_table_name
+  location                      = var.rg_location
+  resource_group_name           = local.spoke_rg_name
+  disable_bgp_route_propagation = false
+  tags                          = var.tags
+
+  depends_on = [
+    module.azure_spoke_with_custom_dns
+  ]
+}
+
+resource "azurerm_route" "spoke-web" {
+  name                   = "${local.web_route_table_name}-webroute"
+  resource_group_name    = local.spoke_rg_name
+  route_table_name       = azurerm_route_table.spoke-web.name
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = module.azure_hub_with_firewall_and_bastion.firewall_private_ip_address
+}
+
+resource "azurerm_route" "spoke-data" {
+  name                   = "${local.data_route_table_name}-dataroute"
+  resource_group_name    = local.spoke_rg_name
+  route_table_name       = azurerm_route_table.spoke-data.name
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = module.azure_hub_with_firewall_and_bastion.firewall_private_ip_address
+}
+
+resource "azurerm_subnet_route_table_association" "spoke-web" {
+  subnet_id      = module.azure_spoke_with_custom_dns.web_subnet_id
+  route_table_id = azurerm_route_table.spoke-web.id
+
+  depends_on = [
+    module.azure_spoke_with_custom_dns
+  ]
+}
+
+resource "azurerm_subnet_route_table_association" "spoke-data" {
+  subnet_id      = module.azure_spoke_with_custom_dns.data_subnet_id
+  route_table_id = azurerm_route_table.spoke-data.id
+
+  depends_on = [
+    module.azure_spoke_with_custom_dns
+  ]
+}

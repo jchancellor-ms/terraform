@@ -1,5 +1,6 @@
 locals {
   hub_connection_name = "vwan-hub-${var.site_root}-${var.vwan_site_index}-vnet-hub-connection"
+  vnet_route_name     = "vwan-connection-route-${var.site_root}-${var.vwan_site_index}"
 }
 
 
@@ -13,6 +14,7 @@ module "azure_vwan_lab_vwan_hub" {
   vwan_id                 = var.vwan_id
   vwan_hub_address_prefix = var.vwan_hub_address_prefix
   vwan_site_index         = var.vwan_site_index
+  vwan_rg_name            = var.vwan_rg_name
 }
 
 #Classic Firewall Hub 
@@ -40,4 +42,19 @@ resource "azurerm_virtual_hub_connection" "vwan_to_classic_hub" {
   name                      = local.hub_connection_name
   virtual_hub_id            = module.azure_vwan_lab_vwan_hub.vwan_hub_id
   remote_virtual_network_id = module.azure_vwan_lab_classic_hub_spoke.hub_vnet_id
+
+  routing {
+    associated_route_table_id = var.vwan_hub_route_table_id
+
+    static_vnet_route {
+      name                = local.vnet_route_name
+      address_prefixes    = concat(var.web_subnet_prefix, var.data_subnet_prefix)
+      next_hop_ip_address = module.azure_vwan_lab_classic_hub_spoke.firewall_private_ip_address
+    }
+  }
 }
+
+
+
+
+

@@ -79,3 +79,12 @@ variable "log_analytics_id" {
   type        = string
   description = "The id for the log analytics workspace being used"
 }
+
+variable "vwan_hub_route_table_id" {
+  type        = string
+  description = "id of the vwan hub default route table"
+}
+
+variable "vwan_rg_name" {
+  description = "Resource Group name"
+}
