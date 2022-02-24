@@ -18,6 +18,10 @@ output "vnet_id" {
   value = module.azure_vnet_hub_extra_subnets.vnet_id
 }
 
+output "vnet_name" {
+  value = module.azure_vnet_hub_extra_subnets.vnet_name
+}
+
 output "rg_name" {
   value = module.azure_vnet_hub_extra_subnets.rg_name
 }

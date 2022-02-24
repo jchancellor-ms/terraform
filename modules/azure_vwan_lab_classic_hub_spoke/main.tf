@@ -138,7 +138,7 @@ resource "azurerm_route_table" "spoke-web" {
   name                          = local.web_route_table_name
   location                      = var.rg_location
   resource_group_name           = local.spoke_rg_name
-  disable_bgp_route_propagation = false
+  disable_bgp_route_propagation = true
   tags                          = var.tags
 
   depends_on = [
@@ -151,7 +151,7 @@ resource "azurerm_route_table" "spoke-data" {
   name                          = local.data_route_table_name
   location                      = var.rg_location
   resource_group_name           = local.spoke_rg_name
-  disable_bgp_route_propagation = false
+  disable_bgp_route_propagation = true
   tags                          = var.tags
 
   depends_on = [
